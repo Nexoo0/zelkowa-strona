@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>@Zelek | Official Hub</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+
+body{
+    background:#020a1a;
+    color:white;
+    overflow:hidden;
+}
+
+canvas{
+    position:fixed;
+    top:0;left:0;
+    z-index:-1;
+}
+
+header{
+    position:fixed;
+    width:100%;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(12px);
+    z-index:10;
+}
+
+.logo{
+    color:#00aaff;
+    font-weight:bold;
+}
+
+nav button{
+    background:none;
+    border:none;
+    color:white;
+    margin-left:20px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+nav button:hover{
+    color:#00e1ff;
+}
+
+.page{
+    position:absolute;
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    opacity:0;
+    pointer-events:none;
+    transform:scale(1.05);
+    transition:0.5s;
+}
+
+.active{
+    opacity:1;
+    pointer-events:auto;
+    transform:scale(1);
+}
+
+h1{
+    font-size:60px;
+    color:#00aaff;
+    text-shadow:0 0 20px #00aaff;
+}
+
+.card{
+    background:rgba(255,255,255,0.05);
+    padding:25px;
+    border-radius:20px;
+    backdrop-filter:blur(15px);
+    max-width:800px;
+    width:90%;
+    text-align:center;
+}
+
+.btn{
+    margin-top:20px;
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    background:linear-gradient(45deg,#00aaff,#00e1ff);
+    color:white;
+}
+
+iframe{
+    width:100%;
+    height:400px;
+    border-radius:15px;
+}
+
+a{color:#00e1ff;}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<header>
+    <div class="logo">@Zelek</div>
+    <nav>
+        <button onclick="show('home')">Start</button>
+        <button onclick="show('about')">O kanale</button>
+        <button onclick="show('videos')">Wideo</button>
+        <button onclick="show('social')">Sociale</button>
+    </nav>
+</header>
+
+<!-- HOME -->
+<div class="page active" id="home">
+    <h1>@Zelek</h1>
+    <p>Oficjalny hub twórcy YouTube</p>
+    <button class="btn" onclick="show('videos')">▶ Wideo</button>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="about">
+    <div class="card">
+        <h2>O kanale</h2>
+        <p>Zelek to twórca YouTube tworzący gaming, rozrywkę i kreatywne treści.</p>
+    </div>
+</div>
+
+<!-- VIDEOS -->
+<div class="page" id="videos">
+    <div class="card">
+        <h2>Wideo</h2>
+        <p>Najnowszy film z kanału:</p>
+
+        <iframe
+            src="https://www.youtube.com/embed/k69eeBe5a10"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+</div>
+
+<!-- SOCIAL -->
+<div class="page" id="social">
+    <div class="card">
+        <h2>Sociale</h2>
+        <p>
+            YouTube: <a href="#" target="_blank">@Zelek</a><br><br>
+            TikTok: <a href="#">dodaj link</a><br><br>
+            Discord: <a href="#">dodaj link</a><br><br>
+            Instagram: <a href="#">dodaj link</a>
+        </p>
+    </div>
+</div>
+
+<script>
+function show(page){
+    document.querySelectorAll('.page').forEach(p=>{
+        p.classList.remove('active');
+    });
+    document.getElementById(page).classList.add('active');
+}
+
+window.onload = () => show('home');
+
+/* background */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for(let i=0;i<70;i++){
+    particles.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        r:Math.random()*2,
+        dx:(Math.random()-0.5),
+        dy:(Math.random()-0.5)
+    });
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#00aaff";
+
+    particles.forEach(p=>{
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fill();
+
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if(p.x<0||p.x>canvas.width)p.dx*=-1;
+        if(p.y<0||p.y>canvas.height)p.dy*=-1;
+    });
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener("resize",()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
